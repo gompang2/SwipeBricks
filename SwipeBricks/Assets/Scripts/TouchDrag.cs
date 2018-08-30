@@ -7,45 +7,73 @@ public class TouchDrag : MonoBehaviour {
     Vector2 touchDownPos;
     Vector2 currentTouchPos;
     Vector2 swipeDirection;
+    Vector2 ballDirection;
 
     public GameObject touchUI;
+    public GameObject lineUI;
+    public GameManager GM;
 
     bool isClick = false;
+    float degree;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && GM.ShootReady)
         { 
             touchDownPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             touchUI.SetActive(true);
+
             touchUI.transform.position = touchDownPos;
+            lineUI.transform.position = GM.ball.transform.position;
+
             isClick = true;
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && isClick)
         {
             isClick = false;
             touchUI.SetActive(false);
+            lineUI.SetActive(false);
+            GM.Shoot(ballDirection.normalized);
         }
 
         if (isClick)
         {
             currentTouchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             swipeDirection = currentTouchPos - touchDownPos;
+            ballDirection = swipeDirection;
 
             Vector2 temp = touchUI.transform.localScale;
             temp.y = Mathf.Sqrt(swipeDirection.x * swipeDirection.x + swipeDirection.y * swipeDirection.y);
             touchUI.transform.localScale = temp;
 
-            //Quaternion rot = Quaternion.Euler(swipeDirection.normalized);
-            touchUI.transform.eulerAngles = new Vector3(0, 180, getAngle(touchUI.transform.position.x, touchUI.transform.position.y, currentTouchPos.x, currentTouchPos.y) + 0.0f);
 
-            Debug.Log(currentTouchPos);
+            if(temp.y >= 0.1f) lineUI.SetActive(true);
+
+            //Quaternion rot = Quaternion.Euler(swipeDirection.normalized);
+
+            degree = getAngle(touchUI.transform.position.x, touchUI.transform.position.y, currentTouchPos.x, currentTouchPos.y);
+
+            touchUI.transform.eulerAngles = new Vector3(0, 180, degree);
+
+
+            if (degree >= 75)
+            {
+                degree = 75;
+                ballDirection = new Vector2(1.0f, 0.2f);
+            }
+            else if (degree <= -75)
+            {
+                degree = -75;
+                ballDirection = new Vector2(-1.0f, 0.2f);
+            }
+
+            lineUI.transform.eulerAngles = new Vector3(0, 180, degree);
         }
 
 
@@ -74,7 +102,7 @@ public class TouchDrag : MonoBehaviour {
         float rad = Mathf.Atan2(dx, dy);
         float degree = rad * Mathf.Rad2Deg;
 
-        Debug.Log(degree);
+        Debug.Log(degree + " " + swipeDirection.normalized);
 
         return degree;
     }

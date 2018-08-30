@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour {
 
+    public bool isShoot = false;
+
 	// Use this for initialization
 	void Start () {
 
@@ -13,4 +15,14 @@ public class Ball : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if(col.gameObject.tag == "Ground")
+        {
+            isShoot = false;
+            transform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            transform.position = new Vector2(transform.position.x, -2.812f);
+        }
+    }
 }
