@@ -29,7 +29,7 @@ public class TouchDrag : MonoBehaviour {
             touchUI.SetActive(true);
 
             touchUI.transform.position = touchDownPos;
-            lineUI.transform.position = GM.ball.transform.position;
+            lineUI.transform.position = GM.ballIndex.transform.GetChild(0).transform.position;
 
             isClick = true;
         }
@@ -39,7 +39,7 @@ public class TouchDrag : MonoBehaviour {
             isClick = false;
             touchUI.SetActive(false);
             lineUI.SetActive(false);
-            GM.Shoot(ballDirection.normalized);
+            GM.ShootStart(ballDirection.normalized);
         }
 
         if (isClick)
@@ -101,8 +101,6 @@ public class TouchDrag : MonoBehaviour {
 
         float rad = Mathf.Atan2(dx, dy);
         float degree = rad * Mathf.Rad2Deg;
-
-        Debug.Log(degree + " " + swipeDirection.normalized);
 
         return degree;
     }
