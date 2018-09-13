@@ -231,10 +231,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Ball.cs" />
-    <Compile Include="Assets\Scripts\Block.cs" />
-    <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\TouchDrag.cs" />
+    <Compile Include="Assets\Scripts\MainGame\AddItem.cs" />
+    <Compile Include="Assets\Scripts\MainGame\Ball.cs" />
+    <Compile Include="Assets\Scripts\MainGame\Block.cs" />
+    <Compile Include="Assets\Scripts\MainGame\GameManager.cs" />
+    <Compile Include="Assets\Scripts\MainGame\TouchDrag.cs" />
+    <Compile Include="Assets\Scripts\Title\Title.cs" />
+    <Compile Include="Assets\Scripts\Title\TitleBall.cs" />
+    <Compile Include="Assets\Scripts\Util.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
